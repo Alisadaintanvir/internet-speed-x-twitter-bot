@@ -24,10 +24,11 @@ class InternetSpeedTwitterBot:
         self.up = 0
 
     def get_internet_speed(self):
+        """Get internet download speed and upload speed from speedtest.net"""
         self.driver.get("https://www.speedtest.net/")
         self.driver.find_element(By.CLASS_NAME, "start-text").click()
         time.sleep(60)
-        
+
         speed_results = self.driver.find_elements(
             By.CSS_SELECTOR, ".result-container-speed span.result-data-large.number.result-data-value"
         )
@@ -37,6 +38,7 @@ class InternetSpeedTwitterBot:
         print(f"Down Speed: {self.down}, Up Speed: {self.up}")
 
     def tweet_at_provider(self):
+        """Post a tweet about internet speed"""
         self.driver.get("https://twitter.com/")
         self.driver.find_element(By.XPATH,
                                  "/html/body/div/div/div/div[2]/main/div/div/div[1]/div[1]/div/div[3]/div[5]/a").click()
@@ -52,6 +54,8 @@ class InternetSpeedTwitterBot:
                                                   "/div[2]/div[1]/input")
             pass_input.send_keys(os.environ.get("TWITTER_PASSWORD"))
             pass_input.send_keys(Keys.ENTER)
+
+        # if there are any username/phone number verification needed
         except NoSuchElementException:
             username = self.driver.find_element(By.XPATH,
                                                 "//*[@id='layers']/div/div/div/div/div/div/div[2]/div[2]/div/div/"
